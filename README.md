@@ -1,4 +1,4 @@
-# Workload scheduler
+# Workload Scheduler
 
 ![scheduler](diagrams/scheduler.png)
 
