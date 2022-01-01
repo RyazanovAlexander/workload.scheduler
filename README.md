@@ -8,7 +8,7 @@ An example of creating an application with a pipeline:
 
 ```js
 var application = {
-    name: 'OCR',
+    name: 'ocr',
     pipeline: {
         chart: 'https://github.com/RyazanovAlexander/application.ocr/tree/main/chart'
     }
