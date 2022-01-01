@@ -23,16 +23,16 @@ When creating this pipeline, a helm chart https://github.com/RyazanovAlexander/a
 
 ```yaml
 {
-  "commands": [
+  "pipeline": [
     {
       "executorName": "wget",
-      "commandLines": [
+      "commands": [
         "wget -O /mnt/pipe/image.png {{url}}"
       ]
     },
     {
       "executorName": "tesseract",
-      "commandLines": [
+      "commands": [
         "tesseract /mnt/pipe/image.png /mnt/pipe/result",
         "cat /mnt/pipe/result.txt",
         "rm /mnt/pipe/result.txt"
