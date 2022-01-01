@@ -2,7 +2,7 @@
 
 ![scheduler](diagrams/scheduler.png)
 
-This component is responsible for distributing tasks among workloads. A pod with a pipeline acts as a workload.
+This component is responsible for distributing tasks among workloads. A [Pod](https://kubernetes.io/docs/concepts/workloads/pods/) with a pipeline acts as a workload.
 
 The scheduler supports multi-tenant mode. Each client can create one or more applications. Several pipelines can be deployed within one application. Workload scaling is provided independently for each deployed pipeline.
 
