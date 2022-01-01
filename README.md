@@ -54,6 +54,6 @@ http.post('http://localhost/api/applications/myname/pipelines/ocr', data, functi
 });
 ```
 
-For each pipeline, a topic is created in a kafka, which, in turn, is divided into several partitions. All events from partitions are loaded using a forwarder into the scheduler of the corresponding pipeline type. The scheduler stores a dictionary of running tasks with their statuses. Dictionary with tasks is saved to the TiDB database every few seconds. Scheduler guarantees at least once delivery.
+For each pipeline, a Topic is created in a Kafka, which, in turn, is divided into several Partitions. All events from partitions are loaded using a forwarder into the scheduler of the corresponding pipeline type. The scheduler stores a dictionary of running tasks with their statuses. Dictionary with tasks is saved to the [TiDB](https://github.com/pingcap/tidb) database every few seconds. Scheduler guarantees at least once delivery.
 
 Workers with pipelines periodically poll the scheduler about the availability of tasks for them. When a task is executed, the worker reports the pipeline execution statuses and the result to the scheduler. All communication is done through gRPC.
