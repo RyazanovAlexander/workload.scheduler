@@ -31,13 +31,13 @@ When creating this pipeline, a helm chart https://github.com/RyazanovAlexander/a
 {
   "pipeline": [
     {
-      "executorName": "wget",
+      "executor": "wget",
       "commands": [
         "wget -O /mnt/pipe/image.png {{url}}"
       ]
     },
     {
-      "executorName": "tesseract",
+      "executor": "tesseract",
       "commands": [
         "tesseract /mnt/pipe/image.png /mnt/pipe/result",
         "cat /mnt/pipe/result.txt",
