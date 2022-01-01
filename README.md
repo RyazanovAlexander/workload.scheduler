@@ -27,7 +27,7 @@ When creating this application, a helm chart https://github.com/RyazanovAlexande
     {
       "executorName": "wget",
       "commandLines": [
-        "wget -O /mnt/pipe/image.png {{URL}}"
+        "wget -O /mnt/pipe/image.png {{url}}"
       ]
     },
     {
