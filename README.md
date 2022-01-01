@@ -2,24 +2,22 @@
 
 This component is responsible for distributing tasks among workloads. A pod with a pipeline acts as a workload.
 
-The scheduler supports multi-tenant mode. Each client can create one or more applications. Each application can run only one type of pipeline. Workload scaling is provided independently for each application.
+The scheduler supports multi-tenant mode. Each client can create one or more applications. Several pipelines can be deployed within one application. Workload scaling is provided independently for each deployed pipeline.
 
-An example of creating an application with a pipeline:
+An example of creating a pipeline for application:
 
 ```js
-var application = {
+var pipeline = {
     name: 'ocr',
-    pipeline: {
-        chart: 'https://github.com/RyazanovAlexander/application.ocr/tree/main/chart'
-    }
+    chart: 'https://github.com/RyazanovAlexander/application.ocr/tree/main/chart'
 };
 
-http.post('http://localhost/application', application, function(res){
+http.post('http://localhost/api/applications/myname/pipelines', application, function(res){
     // ...
 });
 ```
 
-When creating this application, a helm chart https://github.com/RyazanovAlexander/application.ocr/tree/main/chart will be deployed, which defines the following pipeline:
+When creating this pipeline, a helm chart https://github.com/RyazanovAlexander/application.ocr/tree/main/chart will be deployed, which defines the following pipeline:
 
 ```yaml
 {
@@ -49,9 +47,11 @@ var data = {
     url: 'https://some-addr.com/pic.png'
 };
 
-http.post('http://localhost/application/ocr', data, function(res){
+http.post('http://localhost/api/applications/myname/pipelines/ocr', data, function(res){
     // ...
 });
 ```
 
 Workload scheduler guarantees at least once delivery.
+
+![scheduler](diagrams/scheduler.png)
