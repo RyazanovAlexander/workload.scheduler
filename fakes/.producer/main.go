@@ -12,16 +12,13 @@ import (
 )
 
 const (
-	topic         = "message-log"
+	topic         = "application-ocr"
 	brokerAddress = "localhost:9092"
 )
 
 func main() {
 	ctx := context.Background()
-
 	produce(ctx)
-	//go produce(ctx)
-	consume(ctx)
 }
 
 func produce(ctx context.Context) {
@@ -47,24 +44,5 @@ func produce(ctx context.Context) {
 		i++
 
 		time.Sleep(time.Second)
-	}
-}
-
-func consume(ctx context.Context) {
-	l := log.New(os.Stdout, "kafka reader: ", 0)
-	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{brokerAddress},
-		Topic:   topic,
-		GroupID: "my-group",
-		Logger:  l,
-	})
-
-	for {
-		msg, err := r.ReadMessage(ctx)
-		if err != nil {
-			panic("could not read message " + err.Error())
-		}
-
-		fmt.Println("received: ", string(msg.Value))
 	}
 }
