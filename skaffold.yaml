@@ -6,7 +6,7 @@ deploy:
     - name: kafka
       namespace: scheduler
       createNamespace: true
-      chartPath: ./infrastructure/kafka
+      chartPath: ./.local/infrastructure/kafka
       setValueTemplates:
         persistence:
           size: 1Gi
