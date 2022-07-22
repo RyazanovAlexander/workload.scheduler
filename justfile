@@ -1,3 +1,5 @@
+set dotenv-load
+
 CONTENT    := justfile_directory() + "/content"
 DEPLOY     := justfile_directory() + "/deploy"
 COMMIT_TAG := `date "+%Y-%m-%dT%H:%M:%S"`
@@ -5,6 +7,10 @@ COMMIT_TAG := `date "+%Y-%m-%dT%H:%M:%S"`
 # This list of available targets.
 default:
     @just --list
+
+# 1.
+devcontainer:
+	@echo "1"
 
 # 1.
 run:
@@ -30,3 +36,4 @@ local deploy:
 local delete:
 	@echo "3"
 #	@skaffold delete
+
