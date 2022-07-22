@@ -1,8 +1,6 @@
-name: Pipeline launched when a pull request is created
+name: Build and test source code
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
