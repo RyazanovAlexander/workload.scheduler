@@ -8,6 +8,7 @@ jobs:
   build-publish:
     runs-on: ubuntu-22.04
     container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
+    environment: development
     steps:
     - uses: actions/checkout@v2
 
