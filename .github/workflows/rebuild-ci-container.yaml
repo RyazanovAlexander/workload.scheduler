@@ -2,7 +2,7 @@ name: Rebuild CI Container
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:       
   build-publish:
@@ -14,6 +14,23 @@ jobs:
     - name: Build
       run: |
         skaffold version
+
+    #  - name: Login to GitHub Container Registry
+    #     uses: docker/login-action@v1 
+    #     with:
+    #       registry: ghcr.io
+    #       username: ${{ github.repository_owner }}
+    #       password: ${{ secrets.GITHUB_TOKEN }}
+
+    #   - name: Build and run dev container task
+    #     uses: stuartleeks/devcontainer-build-run@v0.1
+    #     with:
+    #       # Change this to point to your image name
+    #       imageName: ghcr.io/example/example-devcontainer
+    #       # Change this to be your CI task/script
+    #       runCmd: make ci-build
+
+      
     #     make build
     # - name: Test
     #   run: |
