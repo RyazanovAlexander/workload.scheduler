@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta26
+apiVersion: skaffold/v2beta29
 kind: Config
 deploy:
   helm:
@@ -6,7 +6,7 @@ deploy:
     - name: kafka
       namespace: scheduler
       createNamespace: true
-      chartPath: ./.local/infrastructure/kafka
+      chartPath: .dependencies/infrastructure/kafka
       setValueTemplates:
         persistence:
           size: 1Gi

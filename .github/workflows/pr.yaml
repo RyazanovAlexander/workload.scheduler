@@ -12,10 +12,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build
+    - name: Build source code
       run: |
         just build
 
-    - name: Test
+    - name: Run unit tests
       run: |
         just test
+
+    - name: Deploying a service and its dependencies on a Minikube cluster
+      run: |
+        just minikube-deploy
+
+    - name: Running integration tests inside a Minikube cluster
+      run: |
+        just minikube-test
+
+    - name: Removing a service and its dependencies from a Minikube cluster
+      run: |
+        just minikube-delete
