@@ -2,7 +2,8 @@ name: Publish artifacts
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - 'releases/**'
 
 jobs:       
   archive-build-artifacts:
