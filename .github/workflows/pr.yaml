@@ -14,4 +14,8 @@ jobs:
 
     - name: Build
       run: |
-        skaffold version
+        just build
+
+    - name: Test
+      run: |
+        just test
