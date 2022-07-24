@@ -12,9 +12,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - uses: actions/checkout@v2
+    - run: git fetch --prune --unshallow
+
+    - name: Set env
+      run: echo "LAST_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
+
     - name: Build and push CI container
       run: |
-        just build-push-ci-container ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
+        just build-push-ci-container \
+          --set LASTTAG ${{ env.LAST_TAG }} \
+          ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
 
     # - name: Build source code
     #   run: |
