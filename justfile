@@ -9,9 +9,14 @@ LASTTAG     := `git tag --sort=committerdate | tail -1`
 GITSHORTSHA := `git rev-parse --short HEAD`
 
 # docker option
-# DTAG   ?= $(LASTTAG)
-# DFNAME ?= Dockerfile
-# DRNAME ?= docker.io/aryazanov/workload-scheduler
+DFULLTAG  := LASTTAG
+DMINORTAG := `git tag --sort=committerdate | tail -1 | cut -d '.' -f 1,2`
+DMAGORTAG := `git tag --sort=committerdate | tail -1 | cut -d '.' -f 1`
+
+DFNAME       := "Dockerfile"
+DRPREFIXNAME := "docker.io/aryazanov"
+DRWSNAME     := DRPREFIXNAME + "/workload-scheduler"
+DRCICNAME    := DRPREFIXNAME + "/workload-scheduler-ci-container"
 
 # go option
 PKG        := "."
@@ -22,16 +27,24 @@ TAGS       := ""
 GOLDFLAGS := "-w -s"
 GOFLAGS   := "-ldflags '" + GOLDFLAGS + "'"
 
-# GOOS   := linux
-# GOARCH := amd64
+GOOS   := "linux"
+GOARCH := "amd64"
 
 # This list of available targets.
 default:
-    @just --list
+	@just --list
+
+# Build and push CI container.
+build-push-ci-container user password:
+	@devcontainer build --no-cache --image-name {{DRCICNAME}}:{{DFULLTAG}}
+	@docker tag {{DRCICNAME}}:{{DFULLTAG}} {{DRCICNAME}}:{{DMINORTAG}}
+	@docker tag {{DRCICNAME}}:{{DFULLTAG}} {{DRCICNAME}}:{{DMAGORTAG}}
+	@docker login -u {{user}} -p {{password}}
+	@docker image push --all-tags {{DRCICNAME}}
 
 # Build source code.
 build:
-    @go build {{GOFLAGS}} -tags '{{TAGS}}' -o {{BINDIR}}/{{BINNAME}} .
+	@go build {{GOFLAGS}} -tags '{{TAGS}}' -o {{BINDIR}}/{{BINNAME}} .
 
 # Run unit tests.
 test:
@@ -39,8 +52,7 @@ test:
 
 # Deploying a service and its dependencies on a Minikube cluster.
 minikube-deploy:
-	@echo "1"
-#	@skaffold dev --port-forward --no-prune=false --cache-artifacts=false
+	@skaffold dev --port-forward --no-prune=false --cache-artifacts=false
 
 # Running integration tests inside a Minikube cluster.
 minikube-test:
@@ -49,14 +61,15 @@ minikube-test:
 
 # Removing a service and its dependencies from a Minikube cluster.
 minikube-delete:
-	@echo "3"
-#	@skaffold delete
+	@skaffold delete
 
-# # 1.
-# devcontainer:
-# 	@echo "1"
-
-# # 1.
-# publish:
-# 	@echo "1"
-
+# Build and push application docker image.
+build-push-image:
+	@docker build \
+		--build-arg BASE_IMAGE_TAG=$GOLANG_BASE_IMAGE_TAG \
+		--build-arg GOOS={{GOOS}} \
+		--build-arg GOARCH={{GOARCH}} \
+		--build-arg GOLDFLAGS={{GOLDFLAGS}} \
+		-t {{DRWSNAME}}:{{DFULLTAG}} \
+		-f ./{{DFNAME}} .
+	@docker push {{DRWSNAME}}:{{DFULLTAG}}

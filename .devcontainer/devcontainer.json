@@ -5,12 +5,11 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {
-			// Update the VARIANT arg to pick a version of Go: 1, 1.18, 1.17
-			// Append -bullseye or -buster to pin to an OS version.
-			// Use -bullseye variants on local arm64/Apple Silicon.
-			"VARIANT": "1.18",
-			// Options
-			"NODE_VERSION": "none"
+			"BASE_IMAGE_TAG": "1.18",
+			"SKAFFOLD_VERSION": "v1.39.0",
+			"NODEJS_VERSION": "18.x",
+			"YQ_VERSION": "v4.26.1",
+			"DIVE_VERSION": "0.10.0"
 		}
 	},
 	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],

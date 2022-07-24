@@ -2,6 +2,11 @@ apiVersion: skaffold/v2beta29
 kind: Config
 deploy:
   helm:
+    hooks:
+      before:
+        - host:
+            command: ["sh", "-c", "helm repo add bitnami https://charts.bitnami.com/bitnami"]
+            os: [darwin, linux]
     releases:
     - name: kafka
       namespace: scheduler
@@ -9,6 +14,7 @@ deploy:
       chartPath: .dependencies/infrastructure/kafka
       setValueTemplates:
         persistence:
-          size: 1Gi
-        logPersistence:
-          size: 1Gi
+          enabled: false
+        zookeeper:
+          persistence:
+            enabled: false

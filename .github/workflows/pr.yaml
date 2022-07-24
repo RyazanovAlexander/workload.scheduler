@@ -12,22 +12,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build source code
+    - name: Build and push CI container
       run: |
-        just build
+        just build-push-ci-container ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Run unit tests
-      run: |
-        just test
+    # - name: Build source code
+    #   run: |
+    #     just build
 
-    - name: Deploying a service and its dependencies on a Minikube cluster
-      run: |
-        just minikube-deploy
+    # - name: Run unit tests
+    #   run: |
+    #     just test
 
-    - name: Running integration tests inside a Minikube cluster
-      run: |
-        just minikube-test
+    # - name: Deploying a service and its dependencies on a Minikube cluster
+    #   run: |
+    #     just minikube-deploy
 
-    - name: Removing a service and its dependencies from a Minikube cluster
-      run: |
-        just minikube-delete
+    # - name: Running integration tests inside a Minikube cluster
+    #   run: |
+    #     just minikube-test
+
+    # - name: Removing a service and its dependencies from a Minikube cluster
+    #   run: |
+    #     just minikube-delete

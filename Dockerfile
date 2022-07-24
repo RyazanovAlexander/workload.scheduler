@@ -1,14 +1,15 @@
-ARG BUILD_IMAGE_TAG=latest
-FROM golang:${BUILD_IMAGE_TAG} AS builder
+ARG BASE_IMAGE_TAG=null
+FROM golang:${BASE_IMAGE_TAG} AS builder
 
 WORKDIR /src/
 COPY . .
 
-ARG GOOS=linux
-ARG GOARCH=amd64
-ARG LDFLAGS="-w -s"
+ARG GOOS=null
+ARG GOARCH=null
+ARG GOLDFLAGS=null
+
 RUN go get -d -v
-RUN GOOS=$GOOS GOARCH=$GOARCH GO111MODULE=on go build -ldflags "$LDFLAGS" -o /bin/workload-scheduler
+RUN GOOS=$GOOS GOARCH=$GOARCH GO111MODULE=on go build -ldflags "$GOLDFLAGS" -o /bin/workload-scheduler
 
 # -----------------------------------------------
 
