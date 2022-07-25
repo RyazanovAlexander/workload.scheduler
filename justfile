@@ -16,7 +16,7 @@ DMAGORTAG := `git tag --sort=committerdate | tail -1 | cut -d '.' -f 1`
 DFNAME       := "Dockerfile"
 DRPREFIXNAME := "docker.io/aryazanov"
 DRWSNAME     := DRPREFIXNAME + "/workload-scheduler"
-DRCICNAME    := DRPREFIXNAME + "/workload-scheduler-ci-container"
+DRDEVCNAME   := DRPREFIXNAME + "/workload-scheduler-dev-container"
 
 # go option
 PKG        := "."
@@ -30,17 +30,41 @@ GOFLAGS   := "-ldflags '" + GOLDFLAGS + "'"
 GOOS   := "linux"
 GOARCH := "amd64"
 
+# cache
+CACHE_DIR := ".devcontainer/.cache"
+HELM_KAFKA := ".dependencies/infrastructure/kafka"
+
 # This list of available targets.
 default:
 	@just --list
 
-# Build and push CI container.
-build-push-ci-container user password:
-	@devcontainer build --no-cache --image-name {{DRCICNAME}}:{{DFULLTAG}}
-	@docker tag {{DRCICNAME}}:{{DFULLTAG}} {{DRCICNAME}}:{{DMINORTAG}}
-	@docker tag {{DRCICNAME}}:{{DFULLTAG}} {{DRCICNAME}}:{{DMAGORTAG}}
+# Dev container initialization.
+init:
+	@minikube start
+
+	#!/bin/bash
+	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; done
+	rm -rf {{CACHE_DIR}}
+
+# Build and push Dev container. 
+build-push-dev-container user password: _create_cache
+	@devcontainer build --no-cache --image-name {{DRDEVCNAME}}:{{DFULLTAG}}
+	@docker tag {{DRDEVCNAME}}:{{DFULLTAG}} {{DRDEVCNAME}}:{{DMINORTAG}}
+	@docker tag {{DRDEVCNAME}}:{{DFULLTAG}} {{DRDEVCNAME}}:{{DMAGORTAG}}
 	@docker login -u {{user}} -p {{password}}
-	@docker image push --all-tags {{DRCICNAME}}
+	@docker image push --all-tags {{DRDEVCNAME}}
+	rm -rf {{CACHE_DIR}}
+
+# Creates a cache for used in the container.
+_create_cache:
+	#!/bin/bash
+	rm -rf {{CACHE_DIR}} && mkdir {{CACHE_DIR}}
+	images="$(helm template {{HELM_KAFKA}} | yq '..|.image? | select(.)' | grep -P -i '.*\/.*:.*')"
+	for image in $images; do
+		diname=`echo $image | md5sum | cut -f1 -d" "`;
+		docker pull $image;
+		docker save --output {{CACHE_DIR}}/$diname $image;
+	done
 
 # Build source code.
 build:

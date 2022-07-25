@@ -12,34 +12,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
-    - run: git fetch --prune --unshallow
-
-    - name: Set env
-      run: echo "LAST_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
-
-    - name: Build and push CI container
+    - name: Build source code
       run: |
-        just build-push-ci-container \
-          --set LASTTAG ${{ env.LAST_TAG }} \
-          ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
+        just build
 
-    # - name: Build source code
-    #   run: |
-    #     just build
+    - name: Run unit tests
+      run: |
+        just test
 
-    # - name: Run unit tests
-    #   run: |
-    #     just test
+    - name: Deploying a service and its dependencies on a Minikube cluster
+      run: |
+        just minikube-deploy
 
-    # - name: Deploying a service and its dependencies on a Minikube cluster
-    #   run: |
-    #     just minikube-deploy
-
-    # - name: Running integration tests inside a Minikube cluster
-    #   run: |
-    #     just minikube-test
-
-    # - name: Removing a service and its dependencies from a Minikube cluster
-    #   run: |
-    #     just minikube-delete
+    - name: Running integration tests inside a Minikube cluster
+      run: |
+        just minikube-test
