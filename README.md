@@ -1,6 +1,6 @@
 # Workload Scheduler
 
-![scheduler](diagrams/scheduler.png)
+![scheduler](.diagrams/scheduler.png)
 
 The Scheduler subsystem is implemented using [Proto.Actor](https://proto.actor/) based on the [Virtual Actors](https://www.microsoft.com/en-us/research/project/orleans-virtual-actors/) approach. You can read about interacting with Kafka [here](https://proto.actor/docs/local-affinity/).
 
