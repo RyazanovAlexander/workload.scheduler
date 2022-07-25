@@ -22,6 +22,5 @@ jobs:
 
     - name: Build and push Dev container
       run: |
-        just build-push-dev-container \
-          --set LASTTAG ${{ env.LAST_TAG }} \
+        just build-push-dev-container LASTTAG=${{ env.LAST_TAG }} \
           ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
