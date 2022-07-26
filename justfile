@@ -41,7 +41,7 @@ default:
 # Dev container initialization.
 init:
 	#!/bin/bash
-	minikube start --force --driver=docker --cpus {{MINIKUBE_CPU}} --memory {{MINIKUBE_RAM}}
+	minikube start --force --driver=docker --cpus $MINIKUBE_CPU --memory $MINIKUBE_RAM
 	mkdir -p {{CACHE_DIR}}
 	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
 	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
