@@ -1,0 +1,6 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+make: Entering directory 'd:/Projects/pipeline-managed/workload.scheduler'
+make: Leaving directory 'd:/Projects/pipeline-managed/workload.scheduler'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

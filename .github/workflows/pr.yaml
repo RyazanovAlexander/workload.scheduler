@@ -1,0 +1,22 @@
+name: Build and test source code
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:       
+  build-test:
+    runs-on: ubuntu-22.04
+    container:
+      image: docker.io/aryazanov/workload-scheduler-ci-container:0.1
+    environment: development
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build source code
+      run: |
+        just build
+
+    - name: Run unit tests
+      run: |
+        just test

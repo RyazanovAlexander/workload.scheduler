@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/go
+{
+	"name": "Go",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			"BASE_IMAGE_TAG": "1.18",
+			"SKAFFOLD_VERSION": "v1.39.0",
+			"NODEJS_VERSION": "18.x",
+			"YQ_VERSION": "v4.26.1",
+			"DIVE_VERSION": "0.10.0"
+		}
+	},
+	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+
+	"customizations": {
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": { 
+				"go.toolsManagement.checkForUpdates": "local",
+				"go.useLanguageServer": true,
+				"go.gopath": "/go"
+			},
+
+			"extensions": [
+				"golang.Go",
+				"sclu1034.justfile",
+				"RelationalAI.delve",
+				"ms-vscode-remote.remote-containers",
+				"vscode-icons-team.vscode-icons",
+				"waderyan.gitblame",
+				"donjayamanne.githistory",
+				"eamodio.gitlens",
+				"766b.go-outliner",
+				"premparihar.gotestexplorer",
+				"Tim-Koehler.helm-intellisense",
+				"zxh404.vscode-proto3"
+			]
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	"postCreateCommand": "just init",
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"docker-in-docker": "20.10",
+		"kubectl-helm-minikube": "1.23"
+	}
+}

@@ -1,0 +1,24 @@
+name: Rebuild CI Container
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:       
+  build-publish:
+    runs-on: ubuntu-22.04
+    container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
+    environment: development
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/checkout@v2
+    - run: git fetch --prune --unshallow
+
+    - name: Set env
+      run: echo "LAST_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
+
+    - name: Build and push Dev container
+      run: |
+        just LASTTAG=${{ env.LAST_TAG }} build-push-dev-container \
+          ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_PASSWORD }}
