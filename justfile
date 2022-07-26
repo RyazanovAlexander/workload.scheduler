@@ -44,7 +44,7 @@ init:
 	minikube start --force --driver=docker
 	mkdir -p {{CACHE_DIR}}
 	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
-	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; done
+	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
 	rm -rf {{CACHE_DIR}}
 
 # Build and push Dev container.
