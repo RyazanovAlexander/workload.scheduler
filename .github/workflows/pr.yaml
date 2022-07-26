@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-22.04
     container:
       image: docker.io/aryazanov/workload-scheduler-ci-container:0.1
-      options: --user 1001
     environment: development
     steps:
     - uses: actions/checkout@v2
