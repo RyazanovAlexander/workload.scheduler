@@ -3,8 +3,6 @@ name: Rebuild CI Container
 on:
   push:
     branches: [ "main" ]
-  pull_request: # temp
-    branches: [ "main" ]
 
 jobs:       
   build-publish:

@@ -40,13 +40,14 @@ default:
 
 # Dev container initialization.
 init:
-	@minikube start
-
 	#!/bin/bash
+	minikube start
+	mkdir -p {{CACHE_DIR}}
+	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
 	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; done
 	rm -rf {{CACHE_DIR}}
 
-# Build and push Dev container. 
+# Build and push Dev container.
 build-push-dev-container user password: _create_cache
 	@devcontainer build --no-cache --image-name {{DRDEVCNAME}}:{{DFULLTAG}}
 	@docker tag {{DRDEVCNAME}}:{{DFULLTAG}} {{DRDEVCNAME}}:{{DMINORTAG}}
