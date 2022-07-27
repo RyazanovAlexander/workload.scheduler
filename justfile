@@ -47,7 +47,7 @@ default:
 #	rm -rf {{CACHE_DIR}}
 # Dev container initialization.
 init:
-	@minikube start
+	@minikube start --force --driver=docker
 
 # Build and push Dev container.
 build-push-dev-container user password: _create_cache
