@@ -43,10 +43,10 @@ init:
 	#!/bin/bash
 #	minikube start --force --driver=docker --cpus $MINIKUBE_CPU --memory $MINIKUBE_RAM
 	minikube start
-	mkdir -p {{CACHE_DIR}}
-	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
-	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
-	rm -rf {{CACHE_DIR}}
+#	mkdir -p {{CACHE_DIR}}
+#	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
+#	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
+#	rm -rf {{CACHE_DIR}}
 
 # Build and push Dev container.
 build-push-dev-container user password: _create_cache
