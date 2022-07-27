@@ -38,15 +38,16 @@ HELM_KAFKA := ".dependencies/infrastructure/kafka"
 default:
 	@just --list
 
-# Dev container initialization.
-init:
-	#!/bin/bash
+#	#!/bin/bash
 #	minikube start --force --driver=docker --cpus $MINIKUBE_CPU --memory $MINIKUBE_RAM
-	minikube start
+#	minikube start
 #	mkdir -p {{CACHE_DIR}}
 #	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
 #	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
 #	rm -rf {{CACHE_DIR}}
+# Dev container initialization.
+init:
+	@minikube start
 
 # Build and push Dev container.
 build-push-dev-container user password: _create_cache
