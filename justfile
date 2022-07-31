@@ -38,10 +38,10 @@ HELM_KAFKA := ".dependencies/infrastructure/kafka"
 default:
 	@just --list
 
-# Dev container initialization.
-init:
 #	@minikube start --driver=podman --container-runtime=containerd
 #   https://github.com/kubernetes/minikube/issues/9792
+# Dev container initialization.
+init:
 	#!/bin/bash
 	minikube start --force --driver=docker --cpus $MINIKUBE_CPU --memory $MINIKUBE_RAM
 	mkdir -p {{CACHE_DIR}}

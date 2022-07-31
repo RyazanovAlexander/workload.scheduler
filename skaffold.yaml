@@ -2,16 +2,12 @@ apiVersion: skaffold/v2beta29
 kind: Config
 deploy:
   helm:
-    hooks:
-      before:
-        - host:
-            command: ["sh", "-c", "helm repo add bitnami https://charts.bitnami.com/bitnami"]
-            os: [darwin, linux]
     releases:
     - name: kafka
       namespace: scheduler
       createNamespace: true
-      chartPath: .dependencies/infrastructure/kafka
+      remoteChart: kafka
+      repo: https://ryazanovalexander.github.io/pipeline-manager.charts
       setValueTemplates:
         persistence:
           enabled: false
