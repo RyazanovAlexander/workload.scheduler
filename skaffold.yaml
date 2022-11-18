@@ -8,6 +8,7 @@ deploy:
       createNamespace: true
       remoteChart: kafka
       repo: https://ryazanovalexander.github.io/pipeline-manager.charts
+      version: 18.0.3
       setValueTemplates:
         persistence:
           enabled: false
