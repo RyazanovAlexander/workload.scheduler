@@ -38,6 +38,8 @@ HELM_KAFKA := ".dependencies/infrastructure/kafka"
 default:
 	@just --list
 
+#	@minikube start --driver=podman --container-runtime=containerd
+#   https://github.com/kubernetes/minikube/issues/9792
 # Dev container initialization.
 init:
 	#!/bin/bash
@@ -75,13 +77,17 @@ build:
 test:
 	@go test {{GOFLAGS}} -run {{TESTS}} {{PKG}} {{TESTFLAGS}}
 
-# Deploying a service and its dependencies on a Minikube cluster.
+# Deploying a service and its dependencies on a Minikube cluster in dev mode.
 minikube-deploy:
 	@skaffold dev --port-forward --no-prune=false --cache-artifacts=false
 
+# Deploying a service and its dependencies on a Minikube cluster in run mode.
+minikube-run:
+	@skaffold run --port-forward --no-prune=false --cache-artifacts=false
+
 # Running integration tests inside a Minikube cluster.
 minikube-test:
-	@echo "2"
+	@echo "Done!"
 #	@skaffold dev ...
 
 # Removing a service and its dependencies from a Minikube cluster.

@@ -7,8 +7,9 @@ on:
 
 jobs:       
   archive-build-artifacts:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: development
+    container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
     steps:
     - uses: actions/checkout@v2
 
@@ -19,10 +20,10 @@ jobs:
 
     - name: Build
       run: |
-        make build
+        just build
     - name: Test
       run: |
-        make test
+        just test
     - uses: actions/checkout@v2
     - run: git fetch --prune --unshallow
 
@@ -34,4 +35,4 @@ jobs:
 
     - name: Container
       run: |
-        make container DTAG=${{ env.RELEASE_TAG }}
+        just build-push-image DTAG=${{ env.RELEASE_TAG }}

@@ -11,8 +11,10 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash 
 RUN curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/${SKAFFOLD_VERSION}/skaffold-linux-amd64 && \
     sudo install skaffold /usr/local/bin/
 
-RUN apt update && \
-    curl -fsSL https://deb.nodesource.com/setup_${NODEJS_VERSION} | sudo -E bash - && \
+RUN sudo apt -y update && sudo apt -y upgrade
+RUN sudo apt -y install podman
+
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODEJS_VERSION} | sudo -E bash - && \
     apt install -y nodejs && \
     npm install -g "@vscode/dev-container-cli"
 

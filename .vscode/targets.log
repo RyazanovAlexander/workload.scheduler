@@ -8,10 +8,12 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 25 22:10:14 2022
+# Make data base, printed on Wed Jul 27 20:13:36 2022
 
 # Variables
 
+# environment
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
 # environment
@@ -37,9 +39,11 @@ GOPATH = C:\Users\Alexander\go
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_3848_FQEZEMPSKRFNCMUZ
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_8696_NFMIREYHGQLZUMPE
 # environment
 VS160COMCOMNTOOLS = C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -69,7 +73,7 @@ ONEDRIVE = C:\Users\Alexander\OneDrive
 # makefile
 CURDIR := d:/Projects/pipeline-managed/workload.scheduler
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # automatic
 *D = $(patsubst %/,%,$(patsubst %\,%,$(dir $*)))
 # environment
@@ -89,7 +93,7 @@ MAKEFILE_LIST :=
 # environment
 PT8HOME = C:\Program Files\Cisco Packet Tracer 8.0.1
 # environment
-VSCODE_PID = 3848
+VSCODE_PID = 8696
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # automatic
@@ -207,7 +211,7 @@ CHOCOLATEYTOOLSLOCATION = C:\tools
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=97/1024=9%, Rehash=0, Collisions=7/121=6%
+# Load=99/1024=10%, Rehash=0, Collisions=8/123=7%
 
 # Pattern-specific Variable Values
 
@@ -215,7 +219,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key d:/Projects/pipeline-managed/workload.scheduler, mtime 1658725339): 19 files, no impossibilities.
+# . (key d:/Projects/pipeline-managed/workload.scheduler, mtime 1658811556): 19 files, no impossibilities.
 
 # 19 files, no impossibilities in 1 directories.
 
@@ -275,12 +279,11 @@ GNUmakefile:
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 26 / storage = 234 B / avg = 9 B
-# current buf: 
- size = 8174 B / used = 234 B / count = 26 / avg = 9 B
+# current buf: size = 8174 B / used = 234 B / count = 26 / avg = 9 B
 
 # strcache performance: lookups = 29 / hit rate = 10%
 # hash-table stats:
 # Load=26/8192=0%, Rehash=0, Collisions=0/29=0%
-# Finished Make data base on Mon Jul 25 22:10:14 2022
+# Finished Make data base on Wed Jul 27 20:13:36 2022
 
  

@@ -6,12 +6,16 @@ on:
 
 jobs:       
   build-test:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     container:
       image: docker.io/aryazanov/workload-scheduler-ci-container:0.1
     environment: development
     steps:
     - uses: actions/checkout@v2
+
+    # - name: 
+    #   run: |
+    #     just init
 
     - name: Build source code
       run: |
@@ -20,3 +24,11 @@ jobs:
     - name: Run unit tests
       run: |
         just test
+
+    # - name: 
+    #   run: |
+    #     just minikube-deploy
+
+    # - name: 
+    #   run: |
+    #     just minikube-test

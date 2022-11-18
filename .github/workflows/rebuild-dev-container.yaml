@@ -6,7 +6,7 @@ on:
 
 jobs:       
   build-publish:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
     environment: development
     steps:
