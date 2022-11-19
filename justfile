@@ -3,6 +3,7 @@ set dotenv-load
 BINDIR    := justfile_directory() + "/bin"
 BINNAME   := "workload-scheduler"
 BUILDTIME := `date "+%Y-%m-%dT%H:%M:%S"`
+TMPDIR    := ".tmp"
 
 # git
 LASTTAG     := `git tag --sort=committerdate | tail -1`
@@ -32,7 +33,10 @@ GOARCH := "amd64"
 
 # cache
 CACHE_DIR := ".devcontainer/.cache"
-HELM_KAFKA := ".dependencies/infrastructure/kafka"
+DEPENDENCIES_HELM := ".deploy/charts"
+
+# skaffold
+SKAFFOLD_PROFILE := "dependencies"
 
 # This list of available targets.
 default:
@@ -48,6 +52,7 @@ init:
 	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
 	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
 	rm -rf {{CACHE_DIR}}
+	just minikube-run
 
 # Build and push Dev container.
 build-push-dev-container user password: _create_cache
@@ -62,7 +67,7 @@ build-push-dev-container user password: _create_cache
 _create_cache:
 	#!/bin/bash
 	rm -rf {{CACHE_DIR}} && mkdir {{CACHE_DIR}}
-	images="$(helm template {{HELM_KAFKA}} | yq '..|.image? | select(.)' | grep -P -i '.*\/.*:.*')"
+	images="$(helm template {{DEPENDENCIES_HELM}} | yq '..|.image? | select(.)' | grep -P -i '.*\/.*:.*')"
 	for image in $images; do
 		diname=`echo $image | md5sum | cut -f1 -d" "`;
 		docker pull $image;
@@ -79,20 +84,19 @@ test:
 
 # Deploying a service and its dependencies on a Minikube cluster in dev mode.
 minikube-deploy:
-	@skaffold dev --port-forward --no-prune=false --cache-artifacts=false
+	@skaffold dev --port-forward --no-prune=false --cache-artifacts=false --profile={{SKAFFOLD_PROFILE}}
 
 # Deploying a service and its dependencies on a Minikube cluster in run mode.
 minikube-run:
-	@skaffold run --port-forward --no-prune=false --cache-artifacts=false
+	@skaffold run --port-forward --no-prune=false --cache-artifacts=false --profile={{SKAFFOLD_PROFILE}}
 
-# Running integration tests inside a Minikube cluster.
+# Running tests inside a Minikube cluster.
 minikube-test:
-	@echo "Done!"
-#	@skaffold dev ...
+	helm test workloadscheduler --namespace scheduler
 
 # Removing a service and its dependencies from a Minikube cluster.
 minikube-delete:
-	@skaffold delete
+	@skaffold delete --profile={{SKAFFOLD_PROFILE}}
 
 # Build and push application docker image.
 build-push-image:
@@ -104,3 +108,14 @@ build-push-image:
 		-t {{DRWSNAME}}:{{DFULLTAG}} \
 		-f ./{{DFNAME}} .
 	@docker push {{DRWSNAME}}:{{DFULLTAG}}
+
+# Package and push helm chart.
+package-push-chart:
+	@helm package .deploy/charts/microservice \
+		--dependency-update \
+		--app-version={{DFULLTAG}} \
+		--version={{DFULLTAG}} \
+		--destination {{TMPDIR}}
+	
+	# TODO
+	# @helm push [chart] [remote] [flags]
