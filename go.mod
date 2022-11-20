@@ -1,3 +1,3 @@
-module github.com/RyazanovAlexander/pipeline-manager/scheduler/v2
+module github.com/RyazanovAlexander/pipeline-manager/scheduler/v1
 
 go 1.18
