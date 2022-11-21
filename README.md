@@ -1,4 +1,4 @@
-# Workload Scheduler
+# workload-scheduler
 
 ![scheduler](.diagrams/scheduler.png)
 
@@ -59,3 +59,4 @@ http.post('http://localhost/api/applications/myname/pipelines/ocr', data, functi
     // ...
 });
 ```
+

@@ -119,3 +119,7 @@ package-push-chart:
 	
 	# TODO
 	# @helm push [chart] [remote] [flags]
+
+# Updates the current repository to the latest template version.
+cruft-update:
+	@cruft update

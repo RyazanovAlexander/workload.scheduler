@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
     environment: development
     container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
-    steps:
+steps:
     - uses: actions/checkout@v2
 
     - name: Build
