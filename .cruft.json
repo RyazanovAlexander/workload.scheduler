@@ -1,8 +1,10 @@
 {
   "template": "https://github.com/RyazanovAlexander/project.template.golang",
-  "commit": "76db35e720b49458738a95c1f935d445683ed63c",
+  "commit": "d81188cc6ac5cb326ed558ceb68f893ca05fcd72",
+  "checkout": null,
   "context": {
     "cookiecutter": {
+      "project_dir_name": "workload.scheduler",
       "project_name": "workload-scheduler",
       "project_module": "github.com/RyazanovAlexander/pipeline-manager/scheduler/v1",
       "docker_registry_prefix_name": "docker.io/aryazanov",
