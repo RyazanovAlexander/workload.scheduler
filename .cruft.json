@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/RyazanovAlexander/project.template.golang",
-  "commit": "d81188cc6ac5cb326ed558ceb68f893ca05fcd72",
+  "commit": "5cd4bfa30a4b5f4089643c92dc03be15ec98a822",
   "checkout": null,
   "context": {
     "cookiecutter": {
