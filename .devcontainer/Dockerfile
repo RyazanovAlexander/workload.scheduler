@@ -13,6 +13,8 @@ RUN curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/${SKAFFOL
 
 RUN sudo apt -y update && sudo apt -y upgrade
 RUN sudo apt -y install podman
+RUN sudo apt-get -y install python3-pip
+RUN sudo pip3 install cruft
 
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODEJS_VERSION} | sudo -E bash - && \
     apt install -y nodejs && \

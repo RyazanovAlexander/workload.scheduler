@@ -1,17 +1,42 @@
 apiVersion: skaffold/v2beta29
 kind: Config
-deploy:
-  helm:
-    releases:
-    - name: kafka
-      namespace: scheduler
-      createNamespace: true
-      remoteChart: kafka
-      repo: https://ryazanovalexander.github.io/pipeline-manager.charts
-      version: 18.0.3
-      setValueTemplates:
-        persistence:
-          enabled: false
-        zookeeper:
-          persistence:
-            enabled: false
+profiles:
+  - name: dependencies
+    deploy:
+      helm:
+        releases:
+        - name: kafka
+          namespace: scheduler
+          createNamespace: true
+          remoteChart: kafka
+          repo: https://ryazanovalexander.github.io/pipeline-manager.charts
+          version: 18.0.3
+          upgradeOnChange: true
+          setValueTemplates:
+            persistence:
+              enabled: false
+            zookeeper:
+              persistence:
+                enabled: false
+  - name: all
+    deploy:
+      helm:
+        releases:
+          - name: workloadscheduler
+            namespace: scheduler
+            createNamespace: true
+            chartPath: .deploy/charts/microservice
+            upgradeOnChange: true
+          - name: kafka
+            namespace: scheduler
+            createNamespace: true
+            remoteChart: kafka
+            repo: https://ryazanovalexander.github.io/pipeline-manager.charts
+            version: 18.0.3
+            upgradeOnChange: true
+            setValueTemplates:
+              persistence:
+                enabled: false
+              zookeeper:
+                persistence:
+                  enabled: false

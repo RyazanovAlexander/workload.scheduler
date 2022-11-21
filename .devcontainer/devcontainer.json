@@ -49,6 +49,9 @@
 	"remoteUser": "vscode",
 	"features": {
 		"docker-in-docker": "20.10",
-		"kubectl-helm-minikube": "1.23"
+		"kubectl-helm-minikube": "1.23",
+		"ghcr.io/devcontainers/features/python:1.0.15": {
+			"version": "3.11"
+		}
 	}
 }
