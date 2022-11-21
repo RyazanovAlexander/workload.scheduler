@@ -1,9 +1,0 @@
-{
-    "project_name": "workload-scheduler",
-    "project_module": "github.com/RyazanovAlexander/pipeline-manager/scheduler/v1",
-
-    "docker_registry_prefix_name": "docker.io/aryazanov",
-
-    "deploy_release_name": "workloadscheduler",
-    "deploy_namespace": "scheduler"
-}
