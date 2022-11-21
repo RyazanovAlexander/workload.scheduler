@@ -5,7 +5,7 @@ on:
     branches:
       - 'releases/**'
 
-jobs:       
+jobs:
   archive-build-artifacts:
     runs-on: self-hosted
     environment: development

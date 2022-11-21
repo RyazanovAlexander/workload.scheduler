@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
 
-jobs:       
+jobs:
   build-publish:
     runs-on: self-hosted
     container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
