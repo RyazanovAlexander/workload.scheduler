@@ -6,7 +6,7 @@ profiles:
       helm:
         releases:
         - name: kafka
-          namespace: scheduler
+          namespace: inf-data
           createNamespace: true
           remoteChart: kafka
           repo: https://ryazanovalexander.github.io/pipeline-manager.charts
@@ -18,8 +18,47 @@ profiles:
             zookeeper:
               persistence:
                 enabled: false
-  - name: all
+            externalAccess:
+              enabled: true
+              service:
+                type: NodePort
+              autoDiscovery:
+                enabled: true
+            serviceAccount:
+              create: true
+            rbac:
+              create: true
+  - name: telemetry
     deploy:
+      statusCheckDeadlineSeconds: 1200
+      helm:
+        releases:
+        - name: signoz
+          namespace: inf-telemetry
+          createNamespace: true
+          remoteChart: signoz
+          repo: https://ryazanovalexander.github.io/pipeline-manager.charts
+          version: 0.5.0
+          upgradeOnChange: true
+  - name: all
+    build:
+      local:
+        push: false
+      artifacts:
+      - image: workload-scheduler
+        context: .
+        docker:
+          dockerfile: Dockerfile
+          buildArgs:
+            BASE_IMAGE_TAG: "{{.GOLANG_BASE_IMAGE_TAG}}"
+            GOFLAGS: "{{.GOFLAGS}}"
+            GOOS: "{{.GOOS}}"
+            GOARCH: "{{.GOARCH}}"
+        sync:
+          infer:
+            - './*'
+    deploy:
+      statusCheckDeadlineSeconds: 1200
       helm:
         releases:
           - name: workloadscheduler
@@ -27,8 +66,12 @@ profiles:
             createNamespace: true
             chartPath: .deploy/charts/microservice
             upgradeOnChange: true
+            artifactOverrides:
+              image: workload-scheduler
+            setValueTemplates:
+              pullPolicy: IfNotPresent
           - name: kafka
-            namespace: scheduler
+            namespace: inf-data
             createNamespace: true
             remoteChart: kafka
             repo: https://ryazanovalexander.github.io/pipeline-manager.charts

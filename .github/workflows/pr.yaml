@@ -9,26 +9,26 @@ jobs:
     runs-on: self-hosted
     container:
       image: docker.io/aryazanov/workload-scheduler-ci-container:0.1
-environment: development
+    environment: development
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Init container environment
-      run: |
-        just init
+      - name: Init container environment
+        run: |
+          just init
 
-    - name: Build source code
-      run: |
-        just build
+      - name: Build source code
+        run: |
+          just build
 
-    - name: Run unit tests
-      run: |
-        just test
+      - name: Run unit tests
+        run: |
+          just test
 
-    - name: Deploy microservice and dependencies in minikube
-      run: |
-        just SKAFFOLD_PROFILE=all minikube-run
+      - name: Deploy microservice and dependencies in minikube
+        run: |
+          just PROFILE=all minikube-run
 
-    - name: Run tests in minikube
-      run: |
-        just SKAFFOLD_PROFILE=all minikube-test
+      - name: Run tests in minikube
+        run: |
+          just PROFILE=all minikube-test

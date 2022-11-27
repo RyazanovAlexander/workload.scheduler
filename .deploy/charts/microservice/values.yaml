@@ -4,11 +4,26 @@
 
 replicaCount: 1
 
+pullPolicy: Always
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  containerRegister: aryazanov
+  name: workload-scheduler
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+
+env:
+  - name: SERVICE_NAME
+    value: "scheduler"
+  - name: HOST_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: $(HOST_IP):4317
+  - name: INSECURE_MODE
+    value: "true"
+  - name: KAFKA_ADDRESS
+    value: "kafka.inf-data.svc.cluster.local:9092"
 
 imagePullSecrets: []
 nameOverride: ""

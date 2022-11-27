@@ -10,6 +10,12 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/main.go",
+            "env": {
+                "SERVICE_NAME": "scheduler",
+                "OTEL_EXPORTER_OTLP_ENDPOINT": "localhost:4317",
+                "INSECURE_MODE": "true",
+                "KAFKA_ADDRESS": "localhost:9094"
+            },
         },
         {
             "name": "Test Current File",

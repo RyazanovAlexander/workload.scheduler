@@ -10,27 +10,27 @@ jobs:
     runs-on: self-hosted
     environment: development
     container: docker.io/aryazanov/workload-scheduler-ci-container:0.1
-steps:
-    - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-    - name: Build
-      run: |
-        just build
+      - name: Build
+        run: |
+          just build
 
-    - name: Test
-      run: |
-        just test
+      - name: Test
+        run: |
+          just test
 
-    - uses: actions/checkout@v2
-    - run: git fetch --prune --unshallow
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --unshallow
 
-    - name: Set env
-      run: echo "RELEASE_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
+      - name: Set env
+        run: echo "RELEASE_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
 
-    - name: Login to DockerHub Registry
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-    - name: Container
-      run: |
-        just build-push-image DTAG=${{ env.RELEASE_TAG }}
-        just package-push-chart DTAG=${{ env.RELEASE_TAG }}
+      - name: Container
+        run: |
+          just build-push-image DTAG=${{ env.RELEASE_TAG }}
+          just package-push-chart DTAG=${{ env.RELEASE_TAG }}

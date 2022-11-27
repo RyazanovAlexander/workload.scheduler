@@ -36,7 +36,7 @@ CACHE_DIR := ".devcontainer/.cache"
 DEPENDENCIES_HELM := ".deploy/charts"
 
 # skaffold
-SKAFFOLD_PROFILE := "dependencies"
+PROFILE := "dependencies"
 
 # This list of available targets.
 default:
@@ -47,7 +47,7 @@ default:
 # Dev container initialization.
 init:
 	#!/bin/bash
-	minikube start --force --driver=docker --cpus $MINIKUBE_CPU --memory $MINIKUBE_RAM
+	just minikube-start
 	mkdir -p {{CACHE_DIR}}
 	if [ -z "$(ls -A {{CACHE_DIR}})" ]; then exit 0; fi
 	for filename in {{CACHE_DIR}}/*; do docker load --input $filename; echo "Loaded $filename\n"; done
@@ -82,13 +82,23 @@ build:
 test:
 	@go test {{GOFLAGS}} -run {{TESTS}} {{PKG}} {{TESTFLAGS}}
 
+# Runs a Minikube with the given amount of resources.
+minikube-start:
+	minikube start --force --driver=docker --cpus $MINIKUBE_CPU --memory $MINIKUBE_RAM --profile custom
+	skaffold config set --kube-context custom local-cluster true
+	eval $(minikube -p custom docker-env)
+
 # Deploying a service and its dependencies on a Minikube cluster in dev mode.
 minikube-deploy:
-	@skaffold dev --port-forward --no-prune=false --cache-artifacts=false --profile={{SKAFFOLD_PROFILE}}
+	@export $(xargs < .env) | \
+	export GOFLAGS="{{GOFLAGS}}" GOOS="{{GOOS}}" GOARCH="{{GOARCH}}" | \
+	skaffold dev --port-forward --no-prune=false --cache-artifacts=false --profile={{PROFILE}}
 
 # Deploying a service and its dependencies on a Minikube cluster in run mode.
 minikube-run:
-	@skaffold run --port-forward --no-prune=false --cache-artifacts=false --profile={{SKAFFOLD_PROFILE}}
+	@export $(xargs < .env) | \
+	export GOFLAGS="{{GOFLAGS}}" GOOS="{{GOOS}}" GOARCH="{{GOARCH}}" | \
+	skaffold run --port-forward --no-prune=false --cache-artifacts=false --profile={{PROFILE}}
 
 # Running tests inside a Minikube cluster.
 minikube-test:
@@ -96,15 +106,15 @@ minikube-test:
 
 # Removing a service and its dependencies from a Minikube cluster.
 minikube-delete:
-	@skaffold delete --profile={{SKAFFOLD_PROFILE}}
+	@export $(xargs < .env) | skaffold delete --profile={{PROFILE}}
 
 # Build and push application docker image.
 build-push-image:
 	@docker build \
 		--build-arg BASE_IMAGE_TAG=$GOLANG_BASE_IMAGE_TAG \
-		--build-arg GOOS={{GOOS}} \
-		--build-arg GOARCH={{GOARCH}} \
-		--build-arg GOLDFLAGS={{GOLDFLAGS}} \
+		--build-arg GOOS="{{GOOS}}" \
+		--build-arg GOARCH="{{GOARCH}}" \
+		--build-arg GOLDFLAGS="{{GOLDFLAGS}}" \
 		-t {{DRWSNAME}}:{{DFULLTAG}} \
 		-f ./{{DFNAME}} .
 	@docker push {{DRWSNAME}}:{{DFULLTAG}}
